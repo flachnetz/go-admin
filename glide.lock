@@ -1,8 +1,14 @@
-hash: 730b13b83987b8b1670b2e5b04b4b8cde24b3d146efb9371d54aa7d733d6d51d
-updated: 2016-11-26T18:24:29.847145967Z
+hash: 0530735274c91c7d74eba9576fbdddda50769ba1f6203a23c15bdb735e57c724
+updated: 2016-11-26T19:00:15.944876741Z
 imports:
 - name: github.com/goji/httpauth
   version: 2da839ab0f4df05a6db5eb277995589dadbd4fb9
+- name: github.com/gorilla/context
+  version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
+- name: github.com/gorilla/mux
+  version: 0eeaf8392f5b04950925b8a69fe70f110fa7cbfc
 - name: github.com/kardianos/osext
   version: c2c54e542fb797ad986b31721e1baedf214ca413
+- name: github.com/pkg/browser
+  version: 9302be274faad99162b9d48ec97b24306872ebb0
 testImports: []

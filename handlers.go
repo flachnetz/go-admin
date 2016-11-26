@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-func WithGeneric(path string, value interface{}) RouteConfig {
+func WithGenericValue(path string, value interface{}) RouteConfig {
 	return WithGetHandler(path, genericContentAsJSON(value))
 }
 
@@ -38,7 +38,7 @@ func WithHandler(method, path string, handler http.Handler) RouteConfig {
 func WithMetrics(registry MetricsRegistry) RouteConfig {
 	return Describe(
 		"The current content of the MetricsRegistry",
-		WithGeneric("/metrics", registry))
+		WithGenericValue("/metrics", registry))
 }
 
 func WithForceGC() RouteConfig {
@@ -68,7 +68,7 @@ func WithBuildInfo(buildInfo BuildInfo) RouteConfig {
 
 	return Describe(
 		"Information about the current build",
-		WithGeneric("/info", func() appInfoWithTime {
+		WithGenericValue("/info", func() appInfoWithTime {
 			hostname, _ := os.Hostname()
 			return appInfoWithTime{
 				BuildInfo:  buildInfo,
@@ -152,7 +152,7 @@ func WithPProfHandlers() RouteConfig {
 func WithEnvironmentVariables() RouteConfig {
 	return Describe(
 		"A map containing all environment variables.",
-		WithGeneric("env", os.Environ))
+		WithGenericValue("env", os.Environ))
 }
 
 func RequireAuth(user, pass string, configs ...RouteConfig) RouteConfig {
@@ -170,13 +170,13 @@ func RequireAuth(user, pass string, configs ...RouteConfig) RouteConfig {
 func WithPingPong() RouteConfig {
 	return Describe(
 		"Always returns the static json '{\"pong\": true}'",
-		WithGeneric("/ping", map[string]bool{"pong": true}))
+		WithGenericValue("/ping", map[string]bool{"pong": true}))
 }
 
 func WithGCStats() RouteConfig {
 	return Describe(
 		"Displays the current gc- and memory-statistics from the golang runtime.",
-		WithGeneric("/gc/stats", func() interface{} {
+		WithGenericValue("/gc/stats", func() interface{} {
 			var stats struct {
 				GarbageCollectorStats debug.GCStats
 				MemStats              runtime.MemStats

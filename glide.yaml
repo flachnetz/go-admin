@@ -1,4 +1,6 @@
-package: srv-git-01-hh1.alinghi.tipp24.net/iwg/go-admin-page
+package: github.com/flachnetz/go-admin
 import:
 - package: github.com/kardianos/osext
 - package: github.com/goji/httpauth
+- package: github.com/gorilla/mux
+  version: ~1.1
