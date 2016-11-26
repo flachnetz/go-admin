@@ -1,12 +1,11 @@
 package admin
 
 import (
-	"reflect"
-	"net/http"
 	"encoding/json"
+	"net/http"
 	"path"
+	"reflect"
 )
-
 
 // This method returns a handler, that produces json obtained from the given
 // input value. The input value might either be just some ordinary value that
@@ -64,4 +63,3 @@ func writeJSON(w http.ResponseWriter, status int, value interface{}) {
 	w.WriteHeader(status)
 	w.Write(body)
 }
-

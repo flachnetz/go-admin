@@ -1,8 +1,8 @@
 package admin
 
 type link struct {
-	Name string
-	Path string
+	Name        string
+	Path        string
 	Description string
 }
 
@@ -17,7 +17,6 @@ func (p linkSlice) Less(i, j int) bool {
 func (p linkSlice) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
-
 
 type indexContext struct {
 	Links   []link
@@ -53,4 +52,3 @@ const indexTemplate = `
 	</div>
 </body>
 </html>`
-
