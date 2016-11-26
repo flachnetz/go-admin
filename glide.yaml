@@ -1,0 +1,4 @@
+package: srv-git-01-hh1.alinghi.tipp24.net/iwg/go-admin-page
+import:
+- package: github.com/kardianos/osext
+- package: github.com/goji/httpauth

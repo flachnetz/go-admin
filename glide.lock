@@ -1,0 +1,8 @@
+hash: 730b13b83987b8b1670b2e5b04b4b8cde24b3d146efb9371d54aa7d733d6d51d
+updated: 2016-11-26T18:24:29.847145967Z
+imports:
+- name: github.com/goji/httpauth
+  version: 2da839ab0f4df05a6db5eb277995589dadbd4fb9
+- name: github.com/kardianos/osext
+  version: c2c54e542fb797ad986b31721e1baedf214ca413
+testImports: []
