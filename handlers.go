@@ -35,6 +35,10 @@ func WithHandler(method, path string, handler http.Handler) RouteConfig {
 	return RouteConfig{Route: Route{Method: method, Path: path, Handler: handler}}
 }
 
+func WithRedirect(from, to string) RouteConfig {
+	return WithHandler("", from, http.RedirectHandler(to, http.StatusTemporaryRedirect))
+}
+
 func WithMetrics(registry MetricsRegistry) RouteConfig {
 	return Describe(
 		"The current content of the MetricsRegistry",
