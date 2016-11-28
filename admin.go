@@ -129,7 +129,7 @@ func (admin *adminContext) AsHandler() http.HandlerFunc {
 					route.Handler.ServeHTTP(w, req)
 
 				} else {
-					http.Error(w, "Illegale method for this path, allowed: " + route.Method, http.StatusMethodNotAllowed)
+					http.Error(w, "Illegale method for this path, allowed: "+route.Method, http.StatusMethodNotAllowed)
 				}
 
 				return
