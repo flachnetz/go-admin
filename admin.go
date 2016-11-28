@@ -119,17 +119,22 @@ func (admin *adminContext) AsHandler() http.HandlerFunc {
 
 		for _, route := range admin.routes {
 			if pathOf(admin.prefix, route.Path) == path {
-				if route.Method != "" && route.Method != req.Method {
+				if isCompatibleMethod(route.Method, req.Method) {
+					// forward request to the handler
+					route.Handler.ServeHTTP(w, req)
+
+				} else {
 					http.Error(w, "Illegale method for this path, allowed: "+route.Method, http.StatusMethodNotAllowed)
-					return
 				}
 
-				// forward request to the handler
-				route.Handler.ServeHTTP(w, req)
 				return
 			}
 		}
 
 		http.NotFound(w, req)
 	}
+}
+
+func isCompatibleMethod(expected, actual string) bool {
+	return expected == "" || expected == actual || expected == "GET" && actual == "HEAD"
 }
