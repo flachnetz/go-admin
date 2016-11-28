@@ -48,7 +48,7 @@ const indexTemplate = `
 		<table>
 			{{ range $link := .Links }}
 				<tr>
-					<td style="padding-right:1.5em"><a target='_blank' href='{{ $link.Path }}'>{{ $link.Name }}</a></td>
+					<td style="padding-right:1.5em"><a href='{{ $link.Path }}'>{{ $link.Name }}</a></td>
 					<td>{{ $link.Description }}</td>
 				</tr>
 			{{ end }}
