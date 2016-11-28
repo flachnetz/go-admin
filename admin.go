@@ -87,7 +87,7 @@ func (a *adminContext) indexHandler() http.HandlerFunc {
 			if route.Path != "/" {
 				links = append(links, link{
 					Name:        route.Path,
-					Path:        pathOf(a.prefix, route.Path),
+					Path:        strings.TrimLeft(pathOf(a.prefix, route.Path), "/"),
 					Description: route.Description,
 				})
 			}
@@ -117,6 +117,11 @@ func (admin *adminContext) AsHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		path := pathOf(req.URL.Path)
 
+		if path != req.URL.Path {
+			http.Redirect(w, req, path, http.StatusTemporaryRedirect)
+			return
+		}
+
 		for _, route := range admin.routes {
 			if pathOf(admin.prefix, route.Path) == path {
 				if isCompatibleMethod(route.Method, req.Method) {
@@ -124,7 +129,7 @@ func (admin *adminContext) AsHandler() http.HandlerFunc {
 					route.Handler.ServeHTTP(w, req)
 
 				} else {
-					http.Error(w, "Illegale method for this path, allowed: "+route.Method, http.StatusMethodNotAllowed)
+					http.Error(w, "Illegale method for this path, allowed: " + route.Method, http.StatusMethodNotAllowed)
 				}
 
 				return
