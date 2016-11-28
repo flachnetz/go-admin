@@ -36,19 +36,23 @@ const indexTemplate = `
 		body {
 			font-family: 'Lato', sans-serif;
 		}
+
+		td {
+			padding-top: 0.5em;
+		}
 	</style>
 </head>
 <body>
   <div class="container">
 		<h1>admin page {{ if ne .AppName "" }} for {{ .AppName }}{{ end }}</h1>
-		<ul>
+		<table>
 			{{ range $link := .Links }}
-				<li>
-					<a target='_blank' href='{{ $link.Path }}'>{{ $link.Name }}</a>
-					<p>{{ $link.Description }}</p>
-				</li>
+				<tr>
+					<td style="padding-right:1.5em"><a target='_blank' href='{{ $link.Path }}'>{{ $link.Name }}</a></td>
+					<td>{{ $link.Description }}</td>
+				</tr>
 			{{ end }}
-		</ul>
+		</table>
 	</div>
 </body>
 </html>`
