@@ -14,6 +14,7 @@ type Route struct {
 	Method      string
 	Path        string
 	Description string
+	wildcard    bool
 }
 
 type RouteConfig struct {
@@ -21,9 +22,18 @@ type RouteConfig struct {
 	children []RouteConfig
 }
 
-func Describe(desc string, rc RouteConfig) RouteConfig {
-	rc.Description = desc
+func (rc RouteConfig) Describe(description string) RouteConfig {
+	rc.Description = description
 	return rc
+}
+
+func (rc RouteConfig) Wildcard(wildcard bool) RouteConfig {
+	rc.wildcard = wildcard
+	return rc
+}
+
+func Describe(desc string, rc RouteConfig) RouteConfig {
+	return rc.Describe(desc)
 }
 
 type adminContext struct {
@@ -122,8 +132,12 @@ func (admin *adminContext) AsHandler() http.HandlerFunc {
 			return
 		}
 
+		// remove prefix from path and apply to request
+		path = pathOf(strings.TrimPrefix(path, admin.prefix))
+		req.URL.Path = path
+
 		for _, route := range admin.routes {
-			if pathOf(admin.prefix, route.Path) == path {
+			if routePathMatches(route, path) {
 				if isCompatibleMethod(route.Method, req.Method) {
 					// forward request to the handler
 					route.Handler.ServeHTTP(w, req)
@@ -137,6 +151,16 @@ func (admin *adminContext) AsHandler() http.HandlerFunc {
 		}
 
 		http.NotFound(w, req)
+	}
+}
+
+func routePathMatches(route Route, path string) bool {
+	routePath := pathOf("/", route.Path)
+
+	if route.wildcard {
+		return strings.HasPrefix(path, routePath)
+	} else {
+		return routePath == path
 	}
 }
 
