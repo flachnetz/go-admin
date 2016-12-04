@@ -1,6 +1,8 @@
-hash: 0530735274c91c7d74eba9576fbdddda50769ba1f6203a23c15bdb735e57c724
-updated: 2016-11-26T19:00:15.944876741Z
+hash: cef953ea2b893c332ebb8d2cca851e7f6214b69c7d8546dd822d6eeaac00973a
+updated: 2016-12-04T16:13:16.222444123Z
 imports:
+- name: github.com/elazarl/go-bindata-assetfs
+  version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
 - name: github.com/goji/httpauth
   version: 2da839ab0f4df05a6db5eb277995589dadbd4fb9
 - name: github.com/gorilla/context
