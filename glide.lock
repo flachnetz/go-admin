@@ -1,5 +1,5 @@
-hash: cef953ea2b893c332ebb8d2cca851e7f6214b69c7d8546dd822d6eeaac00973a
-updated: 2016-12-04T16:13:16.222444123Z
+hash: 28c038d146b77b0008388b10e2b82782119464795deb255dc35342660e1d35e9
+updated: 2016-12-06T08:25:15.994270457Z
 imports:
 - name: github.com/elazarl/go-bindata-assetfs
   version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
@@ -13,4 +13,6 @@ imports:
   version: c2c54e542fb797ad986b31721e1baedf214ca413
 - name: github.com/pkg/browser
   version: 9302be274faad99162b9d48ec97b24306872ebb0
+- name: gopkg.in/yaml.v2
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
 testImports: []
