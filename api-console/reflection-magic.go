@@ -130,10 +130,17 @@ func buildStructType(types map[string][]Property, t reflect.Type) []Property {
 
 		fieldName := serializedFieldName(field)
 		if fieldName != "" {
-			fieldType := typeNameOf(types, field.Type)
+			// append all fields of embedded structs directly.
+			if field.Anonymous {
+				props = append(props, buildStructType(types, field.Type)...)
+				continue
+			}
 
-			desc := field.Tag.Get("desc")
-			props = append(props, Property{Name: fieldName, Type: fieldType, Description: desc})
+			props = append(props, Property{
+				Name: fieldName,
+				Type: typeNameOf(types, field.Type),
+				Description: field.Tag.Get("desc"),
+			})
 		}
 	}
 
