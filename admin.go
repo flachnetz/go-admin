@@ -2,7 +2,6 @@ package admin
 
 import (
 	"bytes"
-	"github.com/gorilla/mux"
 	"html/template"
 	"net/http"
 	"sort"
@@ -53,16 +52,6 @@ func NewAdminHandler(prefix, appName string, routes ...RouteConfig) http.Handler
 	}})
 
 	return admin.AsHandler()
-}
-
-func AddAdminHandler(router *mux.Router, prefix, appName string, routes ...RouteConfig) {
-	adm := NewAdminHandler(prefix, appName, routes...)
-	router.PathPrefix(prefix).Handler(adm)
-}
-
-func AddIndexAdminHandler(router *mux.Router, prefix, appName string, routes ...RouteConfig) {
-	router.Path("/").Handler(http.RedirectHandler(prefix, http.StatusTemporaryRedirect))
-	AddAdminHandler(router, prefix, appName, routes...)
 }
 
 func (admin *adminContext) addRouteConfig(config RouteConfig) {
