@@ -24,10 +24,13 @@ func MergeWithTypes(ramlTemplate string, values ...interface{}) string {
 		panic(errors.Wrap(err, "Could not parse raml template"))
 	}
 
-	ramlTypes := raml["types"].(map[interface{}]interface{})
-	for name, props := range types {
-		if ramlTypes[name] == nil {
-			ramlTypes[name] = props
+	
+	if raml["types"] != nil {
+		ramlTypes := raml["types"].(map[interface{}]interface{})
+		for name, props := range types {
+			if ramlTypes[name] == nil {
+				ramlTypes[name] = props
+			}
 		}
 	}
 
