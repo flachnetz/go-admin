@@ -121,7 +121,7 @@ func WithPProfHandlers() RouteConfig {
 			WithHandler("GET", "pprof/cmdline", http.HandlerFunc(pprofH.Cmdline))),
 
 		Describe(
-			"Profiles the application. Use with 'go pprof http://host/pprof/profile'",
+			"Profiles the application. Use with 'go tool pprof http://host/pprof/profile'",
 			WithHandler("GET", "pprof/profile", http.HandlerFunc(pprofH.Profile))),
 
 		Describe(
