@@ -174,7 +174,10 @@ func RequireAuth(user, pass string, configs ...RouteConfig) RouteConfig {
 func WithPingPong() RouteConfig {
 	return Describe(
 		"Always returns the static json '{\"pong\": true}'",
-		WithGenericValue("/ping", map[string]bool{"pong": true}))
+		WithHandlerFunc("", "/ping", func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Add("Content-Type", "application/json")
+			w.Write([]byte(`{"pong":true}`))
+		}))
 }
 
 func WithGCStats() RouteConfig {
