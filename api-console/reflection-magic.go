@@ -24,7 +24,6 @@ func MergeWithTypes(ramlTemplate string, values ...interface{}) string {
 		panic(errors.Wrap(err, "Could not parse raml template"))
 	}
 
-	
 	if raml["types"] != nil {
 		ramlTypes := raml["types"].(map[interface{}]interface{})
 		for name, props := range types {
@@ -90,6 +89,9 @@ func typeNameOf(types map[string][]Property, t reflect.Type) string {
 
 	case reflect.Slice:
 		return structTypeName(types, t.Elem()) + "[]"
+
+	case reflect.Map:
+		return "object"
 	}
 
 	panic("Can not generate a name for the type: " + t.String())
@@ -97,17 +99,20 @@ func typeNameOf(types map[string][]Property, t reflect.Type) string {
 
 func structTypeName(types map[string][]Property, t reflect.Type) string {
 	if t.Kind() != reflect.Struct {
-		panic("Type must be struct")
+		panic("Type must be struct but was " + t.String())
 	}
 
 	typeName := t.Name()
-
 	// build type if not cached
 	if types[typeName] == nil {
 		// this is to support recursive types
 		types[typeName] = []Property{}
 
-		types[typeName] = buildStructType(types, t)
+		switch t.Kind() {
+		case reflect.Struct:
+			types[typeName] = buildStructType(types, t)
+		}
+
 	}
 
 	return typeName
@@ -140,8 +145,8 @@ func buildStructType(types map[string][]Property, t reflect.Type) []Property {
 			}
 
 			props = append(props, Property{
-				Name: fieldName,
-				Type: typeNameOf(types, field.Type),
+				Name:        fieldName,
+				Type:        typeNameOf(types, field.Type),
 				Description: field.Tag.Get("desc"),
 			})
 		}
