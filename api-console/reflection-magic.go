@@ -85,10 +85,10 @@ func typeNameOf(types map[string][]Property, t reflect.Type) string {
 		return structTypeName(types, t)
 
 	case reflect.Ptr:
-		return structTypeName(types, t.Elem())
+		return typeNameOf(types, t.Elem())
 
 	case reflect.Slice:
-		return structTypeName(types, t.Elem()) + "[]"
+		return typeNameOf(types, t.Elem()) + "[]"
 
 	case reflect.Map:
 		return "object"
