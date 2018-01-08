@@ -7,8 +7,10 @@ if [ -z "$GOPATH" ] ; then
     exit 1
 fi
 
+echo "{}" > package.json
+
 # install uglifyjs
-npm install uglify-js
+npm install uglify-js@3
 node_modules/.bin/uglifyjs --screw-ie8 -o dist/scripts/app.min.js \
     dist/scripts/api-console-vendor.js  dist/scripts/api-console.js
 

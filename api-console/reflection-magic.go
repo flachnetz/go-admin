@@ -90,6 +90,9 @@ func typeNameOf(types map[string][]Property, t reflect.Type) string {
 	case reflect.Slice:
 		return typeNameOf(types, t.Elem()) + "[]"
 
+	case reflect.Array:
+		return typeNameOf(types, t.Elem()) + "[]"
+
 	case reflect.Map:
 		return "object"
 	}
@@ -129,7 +132,11 @@ func instantiateType(t reflect.Type) reflect.Value {
 func buildStructType(types map[string][]Property, t reflect.Type) []Property {
 	marshalerType := reflect.TypeOf((*json.Marshaler)(nil)).Elem()
 	if t.Implements(marshalerType) {
-		return buildStructTypeForJsonMarshaller(t)
+		return buildStructTypeForJsonMarshaler(t)
+	}
+
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
 	}
 
 	var props []Property
@@ -158,7 +165,7 @@ func buildStructType(types map[string][]Property, t reflect.Type) []Property {
 // Build a struct type from the given json.Marshal type. This works by first creating and initializing
 // an instance of the given type, and then by serializing that instance to json, deserializing it to
 // a map and build a type description from that map.
-func buildStructTypeForJsonMarshaller(t reflect.Type) []Property {
+func buildStructTypeForJsonMarshaler(t reflect.Type) []Property {
 	el := instantiateType(t)
 	ma := el.Interface().(json.Marshaler)
 
@@ -172,6 +179,10 @@ func buildStructTypeForJsonMarshaller(t reflect.Type) []Property {
 		panic(errors.Wrap(err, "Could not deserialize from json"))
 	}
 
+	if decoded == nil {
+		return nil
+	}
+
 	_, properties := buildTypeFromExample(decoded)
 	return properties
 }
@@ -180,6 +191,7 @@ func buildStructTypeForJsonMarshaller(t reflect.Type) []Property {
 func buildTypeFromExample(example interface{}) (string, []Property) {
 
 	t := reflect.TypeOf(example)
+
 	switch {
 	case isPrimitiveType(t):
 		return primitiveTypeName(t), []Property{{Type: primitiveTypeName(t)}}

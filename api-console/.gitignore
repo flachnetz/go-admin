@@ -1,2 +1,4 @@
 node_modules
 *.min.js
+package.json
+/node_modules
