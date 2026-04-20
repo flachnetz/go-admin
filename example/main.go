@@ -3,16 +3,16 @@ package main
 import (
 	"net/http"
 
+	"time"
+
 	. "github.com/flachnetz/go-admin"
 	"github.com/pkg/browser"
-	"time"
 )
 
 func main() {
 	admin := NewAdminHandler("example", "/admin",
 		WithDefaults(),
 		WithBuildInfo(BuildInfo{}),
-		WithMetrics(nil),
 
 		// WithGeneric("/service/stats", cache.Stats),
 		// WithGeneric("/services", discovery.Services).Description("List of services"),

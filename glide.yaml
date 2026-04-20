@@ -1,6 +1,0 @@
-package: github.com/flachnetz/go-admin
-import:
-- package: github.com/kardianos/osext
-- package: github.com/goji/httpauth
-- package: github.com/elazarl/go-bindata-assetfs
-- package: gopkg.in/yaml.v2

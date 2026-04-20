@@ -2,10 +2,7 @@ package admin
 
 import (
 	"fmt"
-	"github.com/goji/httpauth"
-	"github.com/kardianos/osext"
 	"io"
-	"io/ioutil"
 	"net/http"
 	pprofH "net/http/pprof"
 	"os"
@@ -13,9 +10,12 @@ import (
 	"runtime/debug"
 	"runtime/pprof"
 	"time"
+
+	"github.com/goji/httpauth"
+	"github.com/kardianos/osext"
 )
 
-func WithGenericValue(path string, value interface{}) RouteConfig {
+func WithGenericValue(path string, value any) RouteConfig {
 	return WithGetHandler(path, genericContentAsJSON(value))
 }
 
@@ -37,12 +37,6 @@ func WithHandler(method, path string, handler http.Handler) RouteConfig {
 
 func WithRedirect(from, to string) RouteConfig {
 	return WithHandler("", from, http.RedirectHandler(to, http.StatusTemporaryRedirect))
-}
-
-func WithMetrics(registry MetricsRegistry) RouteConfig {
-	return Describe(
-		"The current content of the MetricsRegistry",
-		WithGenericValue("/metrics", registry))
 }
 
 func WithForceGC() RouteConfig {
@@ -92,7 +86,7 @@ func WithHeapDump() RouteConfig {
 
 			// we can not write the heap-dump directly to the network socket,
 			// so write it down to disk first.
-			file, err := ioutil.TempFile("/tmp/", "heapdump")
+			file, err := os.CreateTemp("/tmp/", "heapdump")
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -109,7 +103,7 @@ func WithHeapDump() RouteConfig {
 			filename := fmt.Sprintf("heapdump-%s.heap", time.Now().Format("20060102-150405"))
 			w.Header().Set("Content-Disposition", "attachment; filename="+filename)
 
-			file.Seek(0, os.SEEK_SET)
+			file.Seek(0, io.SeekStart)
 			io.Copy(w, file)
 		}))
 }
@@ -183,7 +177,7 @@ func WithPingPong() RouteConfig {
 func WithGCStats() RouteConfig {
 	return Describe(
 		"Displays the current gc- and memory-statistics from the golang runtime.",
-		WithGenericValue("/gc/stats", func() interface{} {
+		WithGenericValue("/gc/stats", func() any {
 			var stats struct {
 				GarbageCollectorStats debug.GCStats
 				MemStats              runtime.MemStats
